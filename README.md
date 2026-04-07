@@ -2,11 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://go.dev/)
-[![Release](https://img.shields.io/badge/release-v0.2.0-beta-green.svg)](https://github.com/mycel/mesh/releases)
+[![Release](https://img.shields.io/badge/release-v1.0.0-green.svg)](https://github.com/mycel/mesh/releases)
 
 **Mycel Mesh** 是一款基于 WireGuard 协议的轻量级虚拟组网工具，将分布在不同地理位置的设备和服务器无缝连接到虚拟局域网中。
 
-> **Beta Release**: v0.2.0 - 功能持续完善中
+> **GA Release**: v1.0.0 - 生产就绪版本
 
 ---
 
