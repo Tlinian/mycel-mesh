@@ -1,0 +1,75 @@
+# Prometheus Alert Rules for Mycel Mesh
+
+groups:
+  - name: mycel-alerts
+    interval: 30s
+    rules:
+      # Node offline alert
+      - alert: MycelNodeOffline
+        expr: mycel_node_offline > 5
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Multiple nodes offline"
+          description: "{{ $value }} nodes are currently offline"
+
+      # High latency alert
+      - alert: MycelHighLatency
+        expr: mycel_node_latency_ms > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High node latency detected"
+          description: "Node {{ $labels.node_id }} has latency of {{ $value }}ms"
+
+      # NAT punch failure alert
+      - alert: MycelNATPunchHighFailure
+        expr: sum(rate(mycel_nat_punch_fail_total[5m])) / sum(rate(mycel_nat_punch_total[5m])) > 0.3
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High NAT punch failure rate"
+          description: "NAT punch failure rate is {{ $value | humanizePercentage }}"
+
+      # Coordinator down alert
+      - alert: MycelCoordinatorDown
+        expr: up{job="mycel-coordinator"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Mycel Coordinator is down"
+          description: "Coordinator instance {{ $labels.instance }} has been down for more than 1 minute"
+
+      # Agent down alert
+      - alert: MycelAgentDown
+        expr: up{job="mycel-agent"} == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Mycel Agent is down"
+          description: "Agent instance {{ $labels.instance }} has been down for more than 5 minutes"
+
+      # Pool exhausted alert
+      - alert: MycelPoolExhausted
+        expr: mycel_pool_connections_in_use / mycel_pool_connections_total > 0.95
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Connection pool nearly exhausted"
+          description: "Connection pool is {{ $value | humanizePercentage }} full"
+
+      # High error rate alert
+      - alert: MycelHighErrorRate
+        expr: rate(mycel_pool_errors_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High pool error rate"
+          description: "Pool error rate is {{ $value }} errors/sec"

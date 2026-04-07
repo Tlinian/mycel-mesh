@@ -1,0 +1,232 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "mycel-nodes",
+    "title": "Mycel Mesh - Node Status Overview",
+    "tags": ["mycel", "nodes", "overview"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "10s",
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+        "type": "singlestat",
+        "title": "Total Nodes",
+        "targets": [
+          {
+            "expr": "mycel_node_total",
+            "legendFormat": "Nodes"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "textMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 50},
+                {"color": "red", "value": 90}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+        "type": "singlestat",
+        "title": "Online Nodes",
+        "targets": [
+          {
+            "expr": "mycel_node_online",
+            "legendFormat": "Online"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 10},
+                {"color": "green", "value": 50}
+              ]
+            },
+            "mappings": []
+          }
+        }
+      },
+      {
+        "id": 3,
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+        "type": "singlestat",
+        "title": "Offline Nodes",
+        "targets": [
+          {
+            "expr": "mycel_node_offline",
+            "legendFormat": "Offline"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 5},
+                {"color": "red", "value": 20}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+        "type": "singlestat",
+        "title": "Node Uptime",
+        "targets": [
+          {
+            "expr": "avg(mycel_node_uptime_seconds)",
+            "legendFormat": "Avg Uptime"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "unit": "s",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+        "type": "timeseries",
+        "title": "Node Latency by Node",
+        "targets": [
+          {
+            "expr": "mycel_node_latency_ms",
+            "legendFormat": "{{node_id}}"
+          }
+        ],
+        "options": {
+          "legend": {"displayMode": "table", "placement": "right", "showLegend": true},
+          "tooltip": {"mode": "single", "sort": "none"}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "unit": "ms",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 50},
+                {"color": "red", "value": 100}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 6,
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+        "type": "table",
+        "title": "Node Details",
+        "targets": [
+          {
+            "expr": "mycel_node_latency_ms",
+            "format": "table",
+            "instant": true
+          },
+          {
+            "expr": "mycel_node_uptime_seconds",
+            "format": "table",
+            "instant": true
+          }
+        ],
+        "options": {
+          "showHeader": true,
+          "columns": [
+            {"displayName": "Node ID", "field": "node_id"},
+            {"displayName": "Latency (ms)", "field": "Value #A"},
+            {"displayName": "Uptime (s)", "field": "Value #B"}
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "gridPos": {"h": 4, "w": 24, "x": 0, "y": 12},
+        "type": "stat",
+        "title": "System Health",
+        "targets": [
+          {
+            "expr": "up{job=\"mycel-coordinator\"}",
+            "legendFormat": "Coordinator"
+          },
+          {
+            "expr": "up{job=\"mycel-agent\"}",
+            "legendFormat": "Agent"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "green", "value": 1}
+              ]
+            },
+            "mappings": [
+              {"type": "value", "options": {"0": {"text": "DOWN"}, "1": {"text": "UP"}}}
+            ]
+          }
+        }
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h"]
+    }
+  },
+  "overwrite": true
+}

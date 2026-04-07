@@ -1,0 +1,203 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "mycel-nat",
+    "title": "Mycel Mesh - NAT Penetration Monitor",
+    "tags": ["mycel", "nat", "punching"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "10s",
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+        "type": "stat",
+        "title": "Total Punch Attempts",
+        "targets": [
+          {
+            "expr": "sum(mycel_nat_punch_total)",
+            "legendFormat": "Total"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "decimals": 0
+          }
+        }
+      },
+      {
+        "id": 2,
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+        "type": "stat",
+        "title": "Success",
+        "targets": [
+          {
+            "expr": "sum(mycel_nat_punch_success_total)",
+            "legendFormat": "Success"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "decimals": 0
+          }
+        }
+      },
+      {
+        "id": 3,
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+        "type": "stat",
+        "title": "Failures",
+        "targets": [
+          {
+            "expr": "sum(mycel_nat_punch_fail_total)",
+            "legendFormat": "Failed"
+          }
+        ],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "decimals": 0
+          }
+        }
+      },
+      {
+        "id": 4,
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+        "type": "gauge",
+        "title": "Success Rate",
+        "targets": [
+          {
+            "expr": "sum(mycel_nat_punch_success_total) / sum(mycel_nat_punch_total) * 100",
+            "legendFormat": "Success Rate"
+          }
+        ],
+        "options": {
+          "showThresholdLabels": true,
+          "min": 0,
+          "max": 100
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 50},
+                {"color": "green", "value": 80}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+        "type": "timeseries",
+        "title": "Punch Success Rate Over Time",
+        "targets": [
+          {
+            "expr": "sum(rate(mycel_nat_punch_success_total[1m])) / sum(rate(mycel_nat_punch_total[1m])) * 100",
+            "legendFormat": "Success Rate"
+          }
+        ],
+        "options": {
+          "legend": {"displayMode": "hidden", "placement": "right", "showLegend": false},
+          "tooltip": {"mode": "single", "sort": "none"}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"},
+            "unit": "percent",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 50},
+                {"color": "green", "value": 80}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 6,
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+        "type": "timeseries",
+        "title": "Punch Attempts vs Failures",
+        "targets": [
+          {
+            "expr": "rate(mycel_nat_punch_total[1m])",
+            "legendFormat": "Attempts/sec"
+          },
+          {
+            "expr": "rate(mycel_nat_punch_fail_total[1m])",
+            "legendFormat": "Failures/sec"
+          }
+        ],
+        "options": {
+          "legend": {"displayMode": "table", "placement": "right", "showLegend": true},
+          "tooltip": {"mode": "multi", "sort": "desc"}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "palette-classic"}
+          }
+        }
+      },
+      {
+        "id": 7,
+        "gridPos": {"h": 6, "w": 24, "x": 0, "y": 12},
+        "type": "table",
+        "title": "NAT Type Distribution",
+        "targets": [
+          {
+            "expr": "mycel_nat_type",
+            "format": "table",
+            "instant": true
+          }
+        ],
+        "options": {
+          "showHeader": true
+        },
+        "fieldConfig": {
+          "defaults": {
+            "mappings": [
+              {"type": "value", "options": {
+                "0": {"text": "Unknown"},
+                "1": {"text": "Full Cone"},
+                "2": {"text": "Restricted Cone"},
+                "3": {"text": "Port Restricted"},
+                "4": {"text": "Symmetric"}
+              }}
+            ]
+          }
+        }
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "timepicker": {
+      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h"]
+    }
+  },
+  "overwrite": true
+}
