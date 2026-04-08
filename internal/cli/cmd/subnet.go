@@ -28,7 +28,7 @@ var subnetCreateCmd = &cobra.Command{
 	Long:  "创建一个新的虚拟子网",
 	Example: `  mycelctl subnet create --name dev-subnet --cidr 10.0.1.0/24
   mycelctl subnet create --name isolated-subnet --cidr 10.0.2.0/24 --isolated`,
-	RunE: func(cmd *cobra.Command, args []error) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		name, _ := cmd.Flags().GetString("name")
 		cidr, _ := cmd.Flags().GetString("cidr")
 		isolated, _ := cmd.Flags().GetBool("isolated")
@@ -58,7 +58,7 @@ var subnetListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "列出子网",
 	Long:  "列出所有虚拟子网",
-	RunE: func(cmd *cobra.Command, args []error) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		output, _ := cmd.Flags().GetString("output")
 
 		// Mock data for demonstration
@@ -106,7 +106,7 @@ var subnetDeleteCmd = &cobra.Command{
 	Short: "删除子网",
 	Long:  "删除一个虚拟子网",
 	Example: `  mycelctl subnet delete --name dev-subnet`,
-	RunE: func(cmd *cobra.Command, args []error) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		name, _ := cmd.Flags().GetString("name")
 
 		if name == "" {
@@ -126,7 +126,7 @@ var subnetStatsCmd = &cobra.Command{
 	Use:   "stats",
 	Short: "子网统计",
 	Long:  "显示子网使用统计",
-	RunE: func(cmd *cobra.Command, args []error) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		name, _ := cmd.Flags().GetString("name")
 
 		// Mock statistics
