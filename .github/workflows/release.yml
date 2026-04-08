@@ -1,0 +1,115 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - os: linux
+            arch: amd64
+          - os: linux
+            arch: arm64
+          - os: darwin
+            arch: amd64
+          - os: darwin
+            arch: arm64
+          - os: windows
+            arch: amd64
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Build
+        run: |
+          export VERSION=${GITHUB_REF#v}
+          export OS_NAME=${{ matrix.os == 'windows' && 'win' || matrix.os }}
+          export EXT=${{ matrix.os == 'windows' && '.exe' || '' }}
+          export ARTIFACT_NAME=mycel-${OS_NAME}-${{ matrix.arch }}
+
+          mkdir -p dist/$ARTIFACT_NAME
+
+          go build -ldflags "-X main.Version=${VERSION}" \
+            -o dist/$ARTIFACT_NAME/coordinator${EXT} ./cmd/coordinator
+          go build -ldflags "-X main.Version=${VERSION}" \
+            -o dist/$ARTIFACT_NAME/agent${EXT} ./cmd/agent
+          go build -ldflags "-X main.Version=${VERSION}" \
+            -o dist/$ARTIFACT_NAME/mycelctl${EXT} ./cmd/mycelctl
+
+          cp README.md dist/$ARTIFACT_NAME/
+          cp docs/quickstart.md dist/$ARTIFACT_NAME/QUICKSTART.md || true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mycel-${{ matrix.os }}-${{ matrix.arch }}
+          path: dist/mycel-${{ matrix.os == 'windows' && 'win' || matrix.os }}-${{ matrix.arch }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+
+      - name: Create archives
+        run: |
+          cd dist
+          for dir in mycel-*; do
+            tar -czf ${dir}.tar.gz -C "$dir" .
+            echo "Created ${dir}.tar.gz"
+          done
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.tar.gz
+          body: |
+            ## Mycel Mesh Release
+
+            ### 下载
+
+            - **Linux x64**: mycel-linux-amd64.tar.gz
+            - **Linux ARM64**: mycel-linux-arm64.tar.gz
+            - **macOS Intel**: mycel-darwin-amd64.tar.gz
+            - **macOS M1/M2**: mycel-darwin-arm64.tar.gz
+            - **Windows x64**: mycel-win-amd64.tar.gz
+
+            ### 快速开始
+
+            ```bash
+            # 解压
+            tar xzf mycel-<平台>.tar.gz
+            cd mycel-<平台>
+
+            # 启动 Coordinator
+            ./coordinator --init
+
+            # 加入节点
+            ./mycelctl join --token <token>
+            ```
+
+            完整文档请查看 README.md
+          generate_release_notes: true
