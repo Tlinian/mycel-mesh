@@ -50,6 +50,7 @@ func TestConnectionPoolConcurrency(t *testing.T) {
 				results <- result{peerID: peerID, success: false, err: err}
 				return
 			}
+			_ = conn
 
 			// Simulate some work
 			time.Sleep(5 * time.Millisecond)
@@ -84,7 +85,7 @@ func TestConnectionPoolConcurrency(t *testing.T) {
 	}
 
 	elapsed := time.Since(startTime)
-.avgLatency := totalLatency / time.Duration(successCount)
+	avgLatency := totalLatency / time.Duration(successCount)
 
 	t.Logf("Concurrency Test Results:")
 	t.Logf("  Total peers: %d", numPeers)
@@ -303,6 +304,7 @@ func BenchmarkConnectionPoolConcurrent(b *testing.B) {
 				b.Error(err)
 				continue
 			}
+			_ = conn
 			manager.Release(peerID)
 			i++
 		}

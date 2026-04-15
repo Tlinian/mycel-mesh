@@ -13,8 +13,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// listCmd lists all nodes in the network.
-var listCmd = &cobra.Command{
+// ListCmd lists all nodes in the network.
+var ListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List network nodes",
 	Long:  "Display all nodes currently in the Mycel network",
@@ -24,10 +24,10 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd.Flags().StringP("coordinator", "c", "", "Coordinator address (host:port)")
-	listCmd.Flags().StringP("token", "t", "", "Join token (optional, uses saved config if available)")
-	listCmd.Flags().StringP("config", "f", "", "Config file path (default: ~/.mycel/config.json)")
-	rootCmd.AddCommand(listCmd)
+	ListCmd.Flags().StringP("coordinator", "c", "", "Coordinator address (host:port)")
+	ListCmd.Flags().StringP("token", "t", "", "Join token (optional, uses saved config if available)")
+	ListCmd.Flags().StringP("config", "f", "", "Config file path (default: ~/.mycel/config.json)")
+	RootCmd.AddCommand(ListCmd)
 }
 
 func runList(cmd *cobra.Command, args []string) error {

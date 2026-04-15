@@ -7,8 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// rootCmd 是 mycelctl 的根命令
-var rootCmd = &cobra.Command{
+// RootCmd 是 mycelctl 的根命令
+var RootCmd = &cobra.Command{
 	Use:   "mycelctl",
 	Short: "Mycel Mesh CLI 工具",
 	Long:  "Mycel Mesh 虚拟组网工具的命令行管理界面",
@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 
 // Execute 执行根命令，处理错误并退出
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

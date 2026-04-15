@@ -1,25 +1,27 @@
-package cmd
+package cmd_test
 
 import (
 	"testing"
+
+	"github.com/mycel/mesh/internal/cli/cmd"
 )
 
 // TestRootCmd 测试根命令的基本属性
 func TestRootCmd(t *testing.T) {
 	t.Run("根命令名称正确", func(t *testing.T) {
-		if rootCmd.Name() != "mycelctl" {
-			t.Fatalf("根命令名称应为 mycelctl, 实际：%s", rootCmd.Name())
+		if cmd.RootCmd.Name() != "mycelctl" {
+			t.Fatalf("根命令名称应为 mycelctl, 实际：%s", cmd.RootCmd.Name())
 		}
 	})
 
 	t.Run("根命令有简短描述", func(t *testing.T) {
-		if rootCmd.Short == "" {
+		if cmd.RootCmd.Short == "" {
 			t.Fatal("根命令缺少简短描述")
 		}
 	})
 
 	t.Run("根命令有详细描述", func(t *testing.T) {
-		if rootCmd.Long == "" {
+		if cmd.RootCmd.Long == "" {
 			t.Fatal("根命令缺少详细描述")
 		}
 	})
@@ -35,11 +37,11 @@ func TestExecute(t *testing.T) {
 				t.Fatalf("Execute() 发生 panic: %v", r)
 			}
 		}()
-		
+
 		// 注意：这里不实际调用 Execute()，因为它会退出程序
-		// 我们只验证 rootCmd 已正确初始化
-		if rootCmd == nil {
-			t.Fatal("rootCmd 未初始化")
+		// 我们只验证 RootCmd 已正确初始化
+		if cmd.RootCmd == nil {
+			t.Fatal("RootCmd 未初始化")
 		}
 	})
 }
@@ -48,8 +50,8 @@ func TestExecute(t *testing.T) {
 func TestRootCmdHasSubCommands(t *testing.T) {
 	t.Run("根命令包含 init 子命令", func(t *testing.T) {
 		found := false
-		for _, cmd := range rootCmd.Commands() {
-			if cmd.Name() == "init" {
+		for _, c := range cmd.RootCmd.Commands() {
+			if c.Name() == "init" {
 				found = true
 				break
 			}
@@ -61,8 +63,8 @@ func TestRootCmdHasSubCommands(t *testing.T) {
 
 	t.Run("根命令包含 join 子命令", func(t *testing.T) {
 		found := false
-		for _, cmd := range rootCmd.Commands() {
-			if cmd.Name() == "join" {
+		for _, c := range cmd.RootCmd.Commands() {
+			if c.Name() == "join" {
 				found = true
 				break
 			}
@@ -74,8 +76,8 @@ func TestRootCmdHasSubCommands(t *testing.T) {
 
 	t.Run("根命令包含 list 子命令", func(t *testing.T) {
 		found := false
-		for _, cmd := range rootCmd.Commands() {
-			if cmd.Name() == "list" {
+		for _, c := range cmd.RootCmd.Commands() {
+			if c.Name() == "list" {
 				found = true
 				break
 			}

@@ -16,8 +16,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// joinCmd joins a Mycel network.
-var joinCmd = &cobra.Command{
+// JoinCmd joins a Mycel network.
+var JoinCmd = &cobra.Command{
 	Use:   "join",
 	Short: "Join Mycel network",
 	Long:  "Connect to Mycel Coordinator and join the virtual network",
@@ -27,13 +27,13 @@ var joinCmd = &cobra.Command{
 }
 
 func init() {
-	joinCmd.Flags().StringP("token", "t", "", "Join token")
-	joinCmd.Flags().StringP("coordinator", "c", "", "Coordinator address (host:port)")
-	joinCmd.Flags().StringP("name", "n", "", "Node name")
-	joinCmd.Flags().StringP("config", "f", "", "Config file path (default: ~/.mycel/config.json)")
-	joinCmd.MarkFlagRequired("token")
-	joinCmd.MarkFlagRequired("coordinator")
-	rootCmd.AddCommand(joinCmd)
+	JoinCmd.Flags().StringP("token", "t", "", "Join token")
+	JoinCmd.Flags().StringP("coordinator", "c", "", "Coordinator address (host:port)")
+	JoinCmd.Flags().StringP("name", "n", "", "Node name")
+	JoinCmd.Flags().StringP("config", "f", "", "Config file path (default: ~/.mycel/config.json)")
+	JoinCmd.MarkFlagRequired("token")
+	JoinCmd.MarkFlagRequired("coordinator")
+	RootCmd.AddCommand(JoinCmd)
 }
 
 func runJoin(cmd *cobra.Command, args []string) error {

@@ -1,14 +1,16 @@
-package wireguard
+package wireguard_test
 
 import (
 	"encoding/base64"
 	"testing"
+
+	"github.com/mycel/mesh/internal/pkg/wireguard"
 )
 
 // TestGenerateKey 测试密钥生成函数
 func TestGenerateKey(t *testing.T) {
 	t.Run("成功生成密钥对", func(t *testing.T) {
-		privateKey, publicKey, err := GenerateKey()
+		privateKey, publicKey, err := wireguard.GenerateKey()
 
 		// 验证无错误
 		if err != nil {
@@ -49,12 +51,12 @@ func TestGenerateKey(t *testing.T) {
 	})
 
 	t.Run("多次生成密钥对不相同", func(t *testing.T) {
-		priv1, pub1, err1 := GenerateKey()
+		priv1, pub1, err1 := wireguard.GenerateKey()
 		if err1 != nil {
 			t.Fatalf("第一次 GenerateKey() 失败：%v", err1)
 		}
 
-		priv2, pub2, err2 := GenerateKey()
+		priv2, pub2, err2 := wireguard.GenerateKey()
 		if err2 != nil {
 			t.Fatalf("第二次 GenerateKey() 失败：%v", err2)
 		}
@@ -77,7 +79,7 @@ func TestGenerateKeyDeterministic(t *testing.T) {
 	// 但我们可以通过多次运行来验证统计特性
 	t.Run("生成 100 对密钥都有效", func(t *testing.T) {
 		for i := 0; i < 100; i++ {
-			priv, pub, err := GenerateKey()
+			priv, pub, err := wireguard.GenerateKey()
 			if err != nil {
 				t.Fatalf("第 %d 次 GenerateKey() 失败：%v", i, err)
 			}

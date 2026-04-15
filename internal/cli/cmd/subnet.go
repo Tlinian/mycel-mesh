@@ -147,7 +147,7 @@ var subnetStatsCmd = &cobra.Command{
 
 func init() {
 	// Add subnet command to root
-	rootCmd.AddCommand(subnetCmd)
+	RootCmd.AddCommand(subnetCmd)
 
 	// Create subcommand
 	subnetCmd.AddCommand(subnetCreateCmd)

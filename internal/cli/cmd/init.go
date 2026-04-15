@@ -7,9 +7,9 @@ import (
 	"github.com/mycel/mesh/internal/pkg/wireguard"
 )
 
-// initCmd 用于初始化 Mycel 节点
+// InitCmd 用于初始化 Mycel 节点
 // 生成节点密钥对，创建本地配置文件
-var initCmd = &cobra.Command{
+var InitCmd = &cobra.Command{
 	Use:   "init",
 	Short: "初始化 Mycel 节点",
 	Long:  "生成节点密钥对，创建本地配置文件",
@@ -35,7 +35,7 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	initCmd.Flags().StringP("name", "n", "", "节点名称")
-	initCmd.MarkFlagRequired("name")
-	rootCmd.AddCommand(initCmd)
+	InitCmd.Flags().StringP("name", "n", "", "节点名称")
+	InitCmd.MarkFlagRequired("name")
+	RootCmd.AddCommand(InitCmd)
 }

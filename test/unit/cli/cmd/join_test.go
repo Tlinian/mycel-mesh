@@ -1,32 +1,34 @@
-package cmd
+package cmd_test
 
 import (
 	"testing"
+
+	"github.com/mycel/mesh/internal/cli/cmd"
 )
 
 // TestJoinCmd 测试 join 命令
 func TestJoinCmd(t *testing.T) {
 	t.Run("join 命令名称正确", func(t *testing.T) {
-		if joinCmd.Name() != "join" {
-			t.Fatalf("命令名称应为 join, 实际：%s", joinCmd.Name())
+		if cmd.JoinCmd.Name() != "join" {
+			t.Fatalf("命令名称应为 join, 实际：%s", cmd.JoinCmd.Name())
 		}
 	})
 
 	t.Run("join 命令有简短描述", func(t *testing.T) {
-		if joinCmd.Short == "" {
+		if cmd.JoinCmd.Short == "" {
 			t.Fatal("join 命令缺少简短描述")
 		}
 	})
 
 	t.Run("join 命令有 token 标志", func(t *testing.T) {
-		tokenFlag := joinCmd.Flags().Lookup("token")
+		tokenFlag := cmd.JoinCmd.Flags().Lookup("token")
 		if tokenFlag == nil {
 			t.Fatal("join 命令缺少 token 标志")
 		}
 	})
 
 	t.Run("join 命令有 coordinator 标志", func(t *testing.T) {
-		coordFlag := joinCmd.Flags().Lookup("coordinator")
+		coordFlag := cmd.JoinCmd.Flags().Lookup("coordinator")
 		if coordFlag == nil {
 			t.Fatal("join 命令缺少 coordinator 标志")
 		}
@@ -36,7 +38,7 @@ func TestJoinCmd(t *testing.T) {
 // TestJoinCmdFlags 测试 join 命令的标志配置
 func TestJoinCmdFlags(t *testing.T) {
 	t.Run("token 标志是必需的", func(t *testing.T) {
-		tokenFlag := joinCmd.Flags().Lookup("token")
+		tokenFlag := cmd.JoinCmd.Flags().Lookup("token")
 		if tokenFlag == nil {
 			t.Fatal("token 标志不存在")
 		}
@@ -45,14 +47,14 @@ func TestJoinCmdFlags(t *testing.T) {
 	})
 
 	t.Run("coordinator 标志是必需的", func(t *testing.T) {
-		coordFlag := joinCmd.Flags().Lookup("coordinator")
+		coordFlag := cmd.JoinCmd.Flags().Lookup("coordinator")
 		if coordFlag == nil {
 			t.Fatal("coordinator 标志不存在")
 		}
 	})
 
 	t.Run("token 标志有简短形式", func(t *testing.T) {
-		tokenFlag := joinCmd.Flags().Lookup("token")
+		tokenFlag := cmd.JoinCmd.Flags().Lookup("token")
 		if tokenFlag == nil {
 			t.Fatal("token 标志不存在")
 		}
@@ -62,7 +64,7 @@ func TestJoinCmdFlags(t *testing.T) {
 	})
 
 	t.Run("coordinator 标志有简短形式", func(t *testing.T) {
-		coordFlag := joinCmd.Flags().Lookup("coordinator")
+		coordFlag := cmd.JoinCmd.Flags().Lookup("coordinator")
 		if coordFlag == nil {
 			t.Fatal("coordinator 标志不存在")
 		}

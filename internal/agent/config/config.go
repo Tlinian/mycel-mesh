@@ -20,6 +20,7 @@ type PeerConfig struct {
 	Name      string `json:"name"`
 	IP        string `json:"ip"`
 	PublicKey string `json:"public_key"`
+	Endpoint  string `json:"endpoint,omitempty"` // Public endpoint for WireGuard
 }
 
 // NodeConfig holds the agent configuration.

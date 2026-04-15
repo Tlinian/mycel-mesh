@@ -30,7 +30,7 @@ func TestConnectionPoolStability(t *testing.T) {
 	const (
 		numPeers     = 50
 		testDuration = 10 * time.Second // Accelerated: represents 72 hours
-	操作频率       = 100 * time.Millisecond
+		opFrequency  = 100 * time.Millisecond
 	)
 
 	var (
@@ -87,7 +87,7 @@ func TestConnectionPoolStability(t *testing.T) {
 				_ = conn
 
 				// Wait before next operation
-				time.Sleep(操作频率)
+				time.Sleep(opFrequency)
 			}
 		}(i)
 	}
@@ -101,7 +101,6 @@ func TestConnectionPoolStability(t *testing.T) {
 		defer ticker.Stop()
 
 		var lastTotalOps int64
-		var lastSuccessOps int64
 
 		for {
 			select {
@@ -125,7 +124,6 @@ func TestConnectionPoolStability(t *testing.T) {
 				}
 
 				lastTotalOps = currentTotal
-				lastSuccessOps = currentSuccess
 			}
 		}
 	}()
