@@ -1,5 +1,5 @@
-// Package batch provides batch processing for Coordinator services.
-package batch
+// Package service provides batch processing for Coordinator services.
+package service
 
 import (
 	"context"

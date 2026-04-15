@@ -103,8 +103,8 @@ func (c *Client) QuerySTUN(server string) (*NATResult, error) {
 	rtt := time.Since(startTime)
 
 	// Parse response
-	res, err := stun.Parse(buf[:n])
-	if err != nil {
+	res := &stun.Message{Raw: buf[:n]}
+	if err := res.Decode(); err != nil {
 		return nil, fmt.Errorf("parse STUN response: %w", err)
 	}
 

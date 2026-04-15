@@ -318,6 +318,11 @@ func (c *Collector) UpdateACLMetrics(rulesTotal, checks, denies uint64) {
 	c.aclDenyTotal.Add(float64(denies))
 }
 
+// UpdateSubnetMetrics updates subnet metrics (placeholder for future implementation).
+func (c *Collector) UpdateSubnetMetrics(subnetID string, allocated, available int) {
+	// Future: add subnet-specific metrics
+}
+
 // GetRegistry returns the Prometheus registry.
 func (c *Collector) GetRegistry() *prometheus.Registry {
 	return c.reg

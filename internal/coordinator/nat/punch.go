@@ -192,7 +192,7 @@ func (h *HolePuncher) Punch(ctx context.Context, peerID string, peerPublicAddr, 
 			latency := time.Since(startTime)
 			result := &PunchResult{
 				Success:    true,
-				RemoteAddr: addr.(*net.UDPAddr),
+				RemoteAddr: addr,
 				LocalAddr:  h.conn.LocalAddr().(*net.UDPAddr),
 				Attempts:   attempt + 1,
 				Latency:    latency,

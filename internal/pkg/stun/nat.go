@@ -31,6 +31,22 @@ type NATInfo struct {
 	Details    string
 }
 
+// IsP2PCapable checks if P2P connection is likely to succeed based on NAT type.
+func (info *NATInfo) IsP2PCapable() bool {
+	if info == nil {
+		return false
+	}
+	return info.CanP2P
+}
+
+// IsSymmetric checks if the NAT is symmetric.
+func (info *NATInfo) IsSymmetric() bool {
+	if info == nil {
+		return false
+	}
+	return info.Type == NATSymmetric
+}
+
 // NATDetector performs NAT type detection using multiple STUN servers.
 type NATDetector struct {
 	client     *Client
@@ -128,22 +144,6 @@ func (d *NATDetector) DetectNATType() (*NATInfo, error) {
 	info.Details = "Full cone NAT: consistent public address, P2P should work"
 
 	return info, nil
-}
-
-// CanP2P checks if P2P connection is likely to succeed based on NAT type.
-func (info *NATInfo) CanP2P() bool {
-	if info == nil {
-		return false
-	}
-	return info.CanP2P
-}
-
-// IsSymmetric checks if the NAT is symmetric.
-func (info *NATInfo) IsSymmetric() bool {
-	if info == nil {
-		return false
-	}
-	return info.Type == NATSymmetric
 }
 
 // SimpleNATDetection performs a simple NAT detection using default STUN servers.

@@ -211,7 +211,7 @@ func (rs *RoutingService) GetRoutePath(srcSubnetID, dstSubnetID string) []*Route
 
 // CreateDefaultRoute creates a default route between two subnets.
 func (rs *RoutingService) CreateDefaultRoute(srcSubnetID, dstSubnetID string) (*Route, error) {
-	srcSubnet, err := rs.subnetSvc.GetSubnet(srcSubnetID)
+	_, err := rs.subnetSvc.GetSubnet(srcSubnetID)
 	if err != nil {
 		return nil, err
 	}
